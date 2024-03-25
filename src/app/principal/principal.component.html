@@ -1,0 +1,36 @@
+<br>
+<app-titulo [titulo]="'Consulta de Pedidos Realizados'"></app-titulo>
+<div class="row">
+    <form [formGroup]="pedidoForm">
+        <div class="form-group btn-group col-sm-4">
+            <input type="text" inputmode="numeric" mask="00.000.000/0000-00" placeholder="CNPJ" formControlName="cnpj" class="form-control">
+            <button class="btn btn-success" (click)="carregarPedidos()">Consultar</button>
+        </div>
+    </form>
+</div>
+<br>
+<div *ngIf="exibir">
+    <br>
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Data do pedido</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Quantidade de Produtos</th>
+                <th scope="col">Fornecedor</th>
+                <th scope="col">Valor Total do Pedido</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pedido of pedidos">
+                <th scope="row">{{pedido.id}}</th>
+                <td>{{pedido.dataPedido | date:'dd/MM/yyyy'}}</td>
+                <td>{{pedido.produto.descricao | uppercase}} </td>
+                <td>{{pedido.quantidadeProdutos}}</td>
+                <td>{{pedido.fornecedor.nomeRazaoSocial | uppercase}} </td>
+                <td>{{pedido.valorTotalPedido}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

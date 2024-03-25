@@ -1,0 +1,86 @@
+<div *ngIf="pedidoSelecionado">
+    <div class="row">
+        <app-titulo
+            [titulo]="(pedidoSelecionado.id > 0 ? 'Editar de pedido: ' + pedidoSelecionado.id : 'Novo pedido'  )"></app-titulo>
+        <form [formGroup]="pedidoForm" (submit)="pedidoSubmit()">
+            <br>
+            <div class="form-group col-sm-2">
+                <label for="formGroupExampleInput">Data do pedido</label>
+                <input type="date" formControlName="dataPedido" class="form-control">
+            </div>
+            <br>
+            <div class="form-group col-sm-2">
+                <label for="formGroupExampleInput2">Produto</label>
+                <select formControlName="produtoId" class="form-control">
+                    <option value="0" [selected]="true">Selecione</option>
+                    <option *ngFor="let produto of produtos" [value]="produto.id">
+                        {{produto.descricao | uppercase}}
+                    </option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group col-sm-2">
+                <label for="formGroupExampleInput2">Quantidade de Produtos</label>
+                <input type="number" formControlName="quantidadeProdutos" class="form-control">
+            </div><br>
+            <div class="form-group col-sm-6">
+                <label for="formGroupExampleInput2">Fornecedor</label>
+                <select formControlName="fornecedorId" class="form-control">
+                    <option value="0" [selected]="true">Selecione</option>
+                    <option *ngFor="let fornecedor of fornecedores" [value]="fornecedor.id">
+                        {{fornecedor.nomeRazaoSocial | uppercase}}
+                    </option>
+                </select>
+            </div><br>
+            <div class="form-group col-sm-2">
+                <label for="formGroupExampleInput2">Valor Total do Pedido</label>
+                <input type="number" formControlName="valorTotalPedido" class="form-control">
+            </div>
+            <br>
+            <div class="mt-1">
+                <button class="btn btn-success" [disabled]="!pedidoForm.valid">Salvar</button>&nbsp;
+                <button class="btn btn-danger" (click)="voltar()">Sair</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div *ngIf="!pedidoSelecionado">
+    <app-titulo [titulo]="'Lista de Pedidos'"></app-titulo>
+    <br>
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Data do pedido</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Quantidade de Produtos</th>
+                <th scope="col">Fornecedor</th>
+                <th scope="col">Valor Total do Pedido</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pedido of pedidos">
+                <th scope="row">{{pedido.id}}</th>
+                <td>{{pedido.dataPedido | date:'dd/MM/yyyy'}}</td>
+                <td>{{pedido.produto.descricao | uppercase}} </td>
+                <td>{{pedido.quantidadeProdutos}}</td>
+                <td>{{pedido.fornecedor.nomeRazaoSocial | uppercase}} </td>
+                <td>{{pedido.valorTotalPedido}}</td>
+                <td>
+                    <div class="btn-group">
+                        <button (click)="pedidoSelect(pedido)" class="btn btn-sm btn-warning">Editar</button>&nbsp;
+                        <button (click)="deletarPedido(pedido.id)" class="btn btn-sm btn-danger">Excluir</button>
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="!pedidoSelecionado">
+    <div class="mt-1">
+        <button class="btn btn-success" (click)="pedidoNovo()">Cadatrar Novo pedido</button>&nbsp;
+    </div>
+</div>

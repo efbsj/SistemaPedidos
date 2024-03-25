@@ -1,0 +1,59 @@
+<div *ngIf="produtoSelecionado">
+    <div class="row">
+        <app-titulo
+            [titulo]="(produtoSelecionado.id > 0 ? 'Editar de Produto: ' + produtoSelecionado.id : 'Novo Produto'  )"></app-titulo>
+        <form [formGroup]="produtoForm" (submit)="produtoSubmit()">
+            <br>
+            <div class="form-group col-sm-8">
+                <label for="formGroupExampleInput">Descrição</label>
+                <input type="text" formControlName="descricao" class="form-control">
+            </div>
+            <br>
+            <div class="form-group col-sm-2">
+                <label for="formGroupExampleInput2">valor do Produto</label>
+                <input type="number" formControlName="valorProduto" class="form-control">
+            </div>
+            <br>
+            <div class="mt-1">
+                <button class="btn btn-success" [disabled]="!produtoForm.valid">Salvar</button>&nbsp;
+                <button class="btn btn-danger" (click)="voltar()">Sair</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div *ngIf="!produtoSelecionado">
+    <app-titulo [titulo]="'Lista de Produto'"></app-titulo>
+    <br>
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Data do Cadastro</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let produto of produtos">
+                <th scope="row">{{produto.id}}</th>
+                <td>{{produto.descricao | uppercase}} </td>
+                <td>{{produto.dataCadastro | date:'dd/MM/yyyy'}}</td>
+                <td>{{produto.valorProduto}}</td>
+                <td>
+                    <div class="btn-group">
+                        <button (click)="produtoSelect(produto)" class="btn btn-sm btn-warning">Editar</button>&nbsp;
+                        <button (click)="deletarProduto(produto.id)" class="btn btn-sm btn-danger">Excluir</button>
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="!produtoSelecionado">
+    <div class="mt-1">
+        <button class="btn btn-success" (click)="produtoNovo()">Cadatrar Novo Produto</button>&nbsp;
+    </div>
+</div>
